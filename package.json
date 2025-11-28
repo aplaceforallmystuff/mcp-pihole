@@ -1,6 +1,7 @@
 {
-  "name": "@jcaai/mcp-pihole",
-  "version": "1.0.0",
+  "name": "mcp-pihole-server",
+  "version": "1.0.1",
+  "mcpName": "io.github.aplaceforallmystuff/mcp-pihole",
   "description": "MCP server for Pi-hole v6 API - manage DNS blocking, view statistics, and control your Pi-hole",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
