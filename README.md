@@ -198,6 +198,10 @@ Session expired. The server will automatically re-authenticate, but if issues pe
 ### Connection refused
 Ensure Pi-hole is running and the URL is correct. Check that you can access the Pi-hole web interface from your machine.
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
