@@ -1,0 +1,44 @@
+{
+  "name": "@jcaai/mcp-pihole",
+  "version": "1.0.0",
+  "description": "MCP server for Pi-hole v6 API - manage DNS blocking, view statistics, and control your Pi-hole",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "bin": {
+    "mcp-pihole": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "pihole",
+    "dns",
+    "ad-blocking",
+    "model-context-protocol",
+    "claude",
+    "ai"
+  ],
+  "author": "Jim Christian",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aplaceforallmystuff/mcp-pihole.git"
+  }
+}
