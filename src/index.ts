@@ -18,6 +18,7 @@ import {
   Tool,
 } from "@modelcontextprotocol/sdk/types.js";
 import { PiholeClient } from "./pihole-client.js";
+import { createDashboard, createBarChart, C } from "./ascii-viz.js";
 
 // Get configuration from environment
 const PIHOLE_URL = process.env.PIHOLE_URL;
@@ -41,7 +42,12 @@ const TOOLS: Tool[] = [
     description: "Get Pi-hole statistics including total queries, blocked queries, blocking percentage, active clients, and domains being blocked",
     inputSchema: {
       type: "object" as const,
-      properties: {},
+      properties: {
+        visualize: {
+          type: "boolean",
+          description: "Return ASCII art dashboard with bar charts instead of JSON",
+        },
+      },
       required: [],
     },
   },
@@ -87,6 +93,10 @@ const TOOLS: Tool[] = [
           type: "number",
           description: "Number of domains to return (default: 10)",
         },
+        visualize: {
+          type: "boolean",
+          description: "Return ASCII art bar chart instead of JSON",
+        },
       },
       required: [],
     },
@@ -101,6 +111,10 @@ const TOOLS: Tool[] = [
           type: "number",
           description: "Number of domains to return (default: 10)",
         },
+        visualize: {
+          type: "boolean",
+          description: "Return ASCII art bar chart instead of JSON",
+        },
       },
       required: [],
     },
@@ -114,6 +128,10 @@ const TOOLS: Tool[] = [
         count: {
           type: "number",
           description: "Number of clients to return (default: 10)",
+        },
+        visualize: {
+          type: "boolean",
+          description: "Return ASCII art bar chart instead of JSON",
         },
       },
       required: [],
@@ -252,7 +270,29 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case "pihole_get_stats": {
+        const visualize = (args as { visualize?: boolean })?.visualize;
         const stats = await pihole.getStats();
+
+        if (visualize) {
+          // Fetch additional data for the dashboard
+          const [topClients, topBlocked, topPermitted] = await Promise.all([
+            pihole.getTopClients(6).catch(() => ({ clients: [] })),
+            pihole.getTopBlockedDomains(6).catch(() => ({ domains: [] })),
+            pihole.getTopPermittedDomains(6).catch(() => ({ domains: [] })),
+          ]);
+
+          const dashboard = createDashboard({
+            ...stats,
+            topClients: topClients.clients,
+            topBlocked: topBlocked.domains,
+            topPermitted: topPermitted.domains,
+          });
+
+          return {
+            content: [{ type: "text", text: dashboard }],
+          };
+        }
+
         return {
           content: [
             {
@@ -324,8 +364,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "pihole_get_top_blocked": {
-        const count = (args as { count?: number })?.count || 10;
+        const count = (args as { count?: number; visualize?: boolean })?.count || 10;
+        const visualize = (args as { count?: number; visualize?: boolean })?.visualize;
         const data = await pihole.getTopBlockedDomains(count);
+
+        if (visualize) {
+          const chart = createBarChart(
+            '🚫 TOP BLOCKED DOMAINS',
+            data.domains.map(d => ({ label: d.domain, value: d.count })),
+            data.total_queries,
+            C.BRIGHT_RED
+          );
+          return {
+            content: [{ type: "text", text: chart }],
+          };
+        }
+
         return {
           content: [
             {
@@ -340,8 +394,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "pihole_get_top_permitted": {
-        const count = (args as { count?: number })?.count || 10;
+        const count = (args as { count?: number; visualize?: boolean })?.count || 10;
+        const visualize = (args as { count?: number; visualize?: boolean })?.visualize;
         const data = await pihole.getTopPermittedDomains(count);
+
+        if (visualize) {
+          const chart = createBarChart(
+            '🌐 TOP PERMITTED DOMAINS',
+            data.domains.map(d => ({ label: d.domain, value: d.count })),
+            data.total_queries,
+            C.BRIGHT_GREEN
+          );
+          return {
+            content: [{ type: "text", text: chart }],
+          };
+        }
+
         return {
           content: [
             {
@@ -356,8 +424,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "pihole_get_top_clients": {
-        const count = (args as { count?: number })?.count || 10;
+        const count = (args as { count?: number; visualize?: boolean })?.count || 10;
+        const visualize = (args as { count?: number; visualize?: boolean })?.visualize;
         const data = await pihole.getTopClients(count);
+
+        if (visualize) {
+          const chart = createBarChart(
+            '🔝 TOP CLIENTS',
+            data.clients.map(c => ({ label: c.name || c.ip, value: c.count })),
+            data.total_queries,
+            C.BRIGHT_BLUE
+          );
+          return {
+            content: [{ type: "text", text: chart }],
+          };
+        }
+
         return {
           content: [
             {

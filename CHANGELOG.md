@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-11-29
+
+### Added
+- ASCII art visualizations with ANSI color support
+- Optional `visualize` parameter for statistics tools
+- Full dashboard visualization for `pihole_get_stats` with summary, top clients, blocked domains, and permitted domains
+- Colorful bar chart visualizations for `pihole_get_top_blocked` (red), `pihole_get_top_permitted` (green), and `pihole_get_top_clients` (blue)
+- Box-drawing characters and partial block characters for precise bar rendering
+
+### Fixed
+- Fixed `TopClientsResponse` interface to match actual Pi-hole v6 API (uses `ip` field, not `client`)
+
 ## [1.0.1] - 2025-11-28
 
 ### Changed

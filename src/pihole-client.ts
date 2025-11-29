@@ -70,7 +70,7 @@ export interface TopDomainsResponse {
 
 export interface TopClientsResponse {
   clients: Array<{
-    client: string;
+    ip: string;
     name: string;
     count: number;
   }>;

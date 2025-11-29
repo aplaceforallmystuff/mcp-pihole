@@ -25,6 +25,7 @@ If you're running Pi-hole on your network, this MCP server lets you:
 | **Domain Lists** | Whitelist/blacklist CRUD operations |
 | **Query Log** | Recent DNS queries with client, status, response time |
 | **Maintenance** | Update gravity, flush cache |
+| **Visualizations** | ASCII art dashboards and bar charts with ANSI colors |
 
 ## Prerequisites
 
@@ -145,6 +146,11 @@ Once configured, you can interact with Pi-hole through natural language:
 
 > "What domains has my phone been querying?"
 
+### Visual Dashboards
+> "Show me Pi-hole stats with visualize: true"
+
+> "Get top blocked domains with visualization"
+
 ## Available Tools
 
 ### Statistics
@@ -170,6 +176,58 @@ Once configured, you can interact with Pi-hole through natural language:
 ### Maintenance
 - `pihole_update_gravity` - Update blocklists (gravity)
 - `pihole_flush_cache` - Flush DNS cache
+
+## ASCII Visualizations
+
+This server supports colorful ASCII art visualizations rendered directly in your terminal using ANSI escape codes.
+
+### Supported Tools
+
+The following tools support the optional `visualize: true` parameter:
+
+| Tool | Visualization |
+|------|---------------|
+| `pihole_get_stats` | Full dashboard with summary stats, top clients, blocked domains, and permitted domains |
+| `pihole_get_top_blocked` | Red bar chart of blocked domains |
+| `pihole_get_top_permitted` | Green bar chart of permitted domains |
+| `pihole_get_top_clients` | Blue bar chart of client activity |
+
+### Usage
+
+Pass `visualize: true` to any supported tool:
+
+```json
+{
+  "name": "pihole_get_stats",
+  "arguments": {
+    "visualize": true
+  }
+}
+```
+
+When `visualize` is not set or `false`, tools return JSON data as usual.
+
+### Example Output
+
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         🛡️  PI-HOLE DASHBOARD                          ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║ 📊 SUMMARY                                                                 ║
+║ ────────────────────────────────────────────────────────────────────────── ║
+║ Total Queries:      73K             Domains Blocked:    2.4M               ║
+║ Blocked:            22K             Active Clients:     28                 ║
+║ Block Rate:         29.7%           Total Clients:      115                ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ 🔝 TOP CLIENTS                                                             ║
+║ ────────────────────────────────────────────────────────────────────────── ║
+║ 192.168.1.52     ████████████████████████████████████████   28K (38%)      ║
+║ 192.168.1.51     ███████████████████▋                       14K (19%)      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+```
+
+(Colors appear in terminals that support ANSI escape codes)
 
 ## Development
 
