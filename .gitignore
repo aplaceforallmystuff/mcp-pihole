@@ -4,3 +4,7 @@ dist/
 .env
 .DS_Store
 .mcpregistry_*
+
+# Claude Code local files
+.claude/memory/
+.claude/settings.local.json
