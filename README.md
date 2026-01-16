@@ -272,4 +272,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 - [Pi-hole](https://pi-hole.net)
 - [Pi-hole Documentation](https://docs.pi-hole.net)
 - [Model Context Protocol](https://modelcontextprotocol.io)
-- [MCP Specification](https://spec.modelcontextprotocol.io)
+- [MCP Specification](https://modelcontextprotocol.io/specification)
