@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io)
 
+![Architecture](docs/images/architecture-diagram.png)
+
 An MCP (Model Context Protocol) server that connects AI assistants like Claude to your [Pi-hole](https://pi-hole.net) network-wide ad blocker. Manage DNS blocking, view statistics, control whitelists/blacklists, and more through natural language.
 
 ## Why Use This?
