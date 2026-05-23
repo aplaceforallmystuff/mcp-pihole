@@ -40,3 +40,7 @@ rules:
   - id: destructive-ops
     description: Blocking disable should warn about security implications
 ```
+
+## Pre-Publish
+
+Run `/publish-mcp` before any `npm publish` — mandatory pipeline that handles tests, secret scan, sanitize, docs check, version bump, tag, push, and publish in strict order. Do not run `npm publish` directly.
